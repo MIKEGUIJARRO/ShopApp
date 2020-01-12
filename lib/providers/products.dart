@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../models/product.dart';
+import './product.dart';
 
 class Products with ChangeNotifier {
   //Usamos un mixin
@@ -54,5 +54,10 @@ class Products with ChangeNotifier {
   void addProduct() {
     //_items.add(value);
     notifyListeners();
+  }
+
+  //El objetivo es hacer toda la logica dentro del provider
+  Product findById(String id) {
+    return _items.firstWhere((prod) => prod.id == id);
   }
 }

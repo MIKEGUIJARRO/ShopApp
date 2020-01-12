@@ -24,6 +24,7 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.deepOrange,
             fontFamily: "Lato"),
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         home: ProductOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
