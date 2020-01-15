@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
 import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
 
@@ -14,8 +13,15 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final product = Provider.of<Product>(context, listen: false);
+    //El widget Consumer sustituye la variable final product.
+    //ESte aproach nos da ventajas:
+    //Con Provider.of<Product> el metodo build se manda llamar cuando esta data cambie
+    //Con Consumer<Product> solo se reconstruye una parte del widget tree
 
-    final product = Provider.of<Product>(context);
+    /* Nota final: se decidio poner tener dos formas de escuchar los cambios de producto
+    1. Con Provider.of escuchamos al momento de inicializar el producto y cerramos canal
+    2. Con el widget Consumer wrapeamos el boton para escuchar cambios de manera permanente*/
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
@@ -23,14 +29,13 @@ class ProductItem extends StatelessWidget {
         child: GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
-            arguments: product.id);
+                arguments: product.id);
             //Con arguments enviamos informacion al momento del push screen
             /* Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => ProductDetailScreen(
-                      title: title,
-                      price: 0,
-                    ))); */
-
+                  builder: (ctx) => ProductDetailScreen(
+                        title: title,
+                        price: 0,
+                      ))); */
           },
           child: Image.network(
             product.imageUrl,
@@ -38,12 +43,15 @@ class ProductItem extends StatelessWidget {
           ),
         ),
         footer: GridTileBar(
-          leading: IconButton(
-            icon: Icon(product.isFavorite ? Icons.favorite : Icons.favorite_border),
-            onPressed: () {
-              product.toggleFavoriteStatus();
-            },
-            color: Theme.of(context).accentColor,
+          leading: Consumer<Product>(
+            builder: (ctx, product, _) => IconButton(
+              icon: Icon(
+                  product.isFavorite ? Icons.favorite : Icons.favorite_border),
+              onPressed: () {
+                product.toggleFavoriteStatus();
+              },
+              color: Theme.of(context).accentColor,
+            ),
           ),
           backgroundColor: Colors.black87,
           title: Text(product.title, textAlign: TextAlign.center),

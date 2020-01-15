@@ -5,6 +5,11 @@ import '../providers/products.dart';
 import './product_item.dart';
 
 class ProductGrid extends StatelessWidget {
+
+  final bool showFavs;
+
+  ProductGrid(this.showFavs);
+
   @override
   Widget build(BuildContext context) {
     //Se almacena la instancia de la clase
@@ -16,14 +21,15 @@ class ProductGrid extends StatelessWidget {
     con la clase <Products> exclusivamente.
     */
 
-    final products = productsData.items;
+    final products = showFavs ? productsData.favoriteItems: productsData.items;
 
     return GridView.builder(
       padding: const EdgeInsets.all(10.0),
       itemCount: products.length,
       itemBuilder: (ctx, index) {
-        return ChangeNotifierProvider(
-          builder: (c) => products[index],
+        return ChangeNotifierProvider.value(
+          /* builder: (c) => products[index], */
+          value: products[index],
           child: ProductItem(
               //Ya no pasamos info por constructor ya que usamos provider
               /* id: products[index].id,

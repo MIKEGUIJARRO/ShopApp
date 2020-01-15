@@ -4,6 +4,9 @@ import './product.dart';
 class Products with ChangeNotifier {
   //Usamos un mixin
   //Usamos changeNotifier
+
+  /* var _showFavoritesOnly = false; */
+
   List<Product> _items = [
     Product(
       id: 'p1',
@@ -40,6 +43,10 @@ class Products with ChangeNotifier {
   ];
 
   List<Product> get items {
+    /* if (_showFavoritesOnly) {
+      return _items.where((prodItem) => prodItem.isFavorite).toList();
+    } */
+
     return [..._items];
     /*  Enviamos una copia de _items por que requerimos mantener el apuntador de memoria
     de manera interna, de esta forma podremos llamar notifyListeners(); de manera segura,
@@ -60,4 +67,18 @@ class Products with ChangeNotifier {
   Product findById(String id) {
     return _items.firstWhere((prod) => prod.id == id);
   }
+
+  List<Product> get favoriteItems {
+    return _items.where((productItem) => productItem.isFavorite).toList();
+  }
+
+  /* void showFavoritesOnly() {
+    _showFavoritesOnly = true;
+    notifyListeners();
+  }
+
+  void showAll() {
+    _showFavoritesOnly = false;
+    notifyListeners();
+  } */
 }

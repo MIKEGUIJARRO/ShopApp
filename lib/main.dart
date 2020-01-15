@@ -10,14 +10,20 @@ void main() => runApp(MyApp());
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return ChangeNotifierProvider.value(
+      //ChangeNotifierProvider.value se usa cuando no pasamos el contexto y no es necesario
+      //Ademas con ChangeNotifierProvider.value es recomendado para listas y grids donde
+      //el orden de la info cambia de orden constantemente y no se pierda con el state
+
       //Ponemos en la raiz de nuestro widget tree ChangeNotifierProvider
       //nos permitira registrar una clase que podra escuchar en widgets hijos
       //de esta forma reconstruira estas clases si la data cambia.
-      builder: (ctx) {
+
+      value: Products(),
+      /* builder: (ctx) {
         //Entrega esta clase a los widgets hijos
         return Products();
-      },
+      }, */
       child: MaterialApp(
         theme: ThemeData(
             primarySwatch: Colors.amber,
@@ -28,8 +34,7 @@ class MyApp extends StatelessWidget {
         home: ProductOverviewScreen(),
         routes: {
           ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
-        },    
-                      
+        },
       ),
     );
   }
