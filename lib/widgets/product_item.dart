@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
 
+import '../providers/cart.dart';
+
 class ProductItem extends StatelessWidget {
   /* final String id;
   final String title;
@@ -14,6 +16,7 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final product = Provider.of<Product>(context, listen: false);
+    final cart = Provider.of<Cart>(context, listen: false);
     //El widget Consumer sustituye la variable final product.
     //ESte aproach nos da ventajas:
     //Con Provider.of<Product> el metodo build se manda llamar cuando esta data cambie
@@ -58,7 +61,7 @@ class ProductItem extends StatelessWidget {
           trailing: IconButton(
             icon: Icon(Icons.shopping_cart),
             onPressed: () {
-              //...
+              cart.addItem(product.id, product.price, product.title);
             },
             color: Theme.of(context).accentColor,
           ),
