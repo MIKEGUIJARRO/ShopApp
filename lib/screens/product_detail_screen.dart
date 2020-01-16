@@ -16,14 +16,46 @@ class ProductDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     //Recibimos el Id al momento de crear la pagina
     final productId = ModalRoute.of(context).settings.arguments as String;
-    //listen: false nos permite cerrar la via de comunicacion con el provider 
+    //listen: false nos permite cerrar la via de comunicacion con el provider
     // con el fin de que no se reconstruya este view. No estamos interesados en updates
-    final loadedProduct = Provider.of<Products>(context, listen: false).findById(productId);
-        
+    final loadedProduct =
+        Provider.of<Products>(context, listen: false).findById(productId);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(loadedProduct.title),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 300,
+              child: Image.network(
+                loadedProduct.imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Text(
+              "\$${loadedProduct.price}",
+              style: TextStyle(color: Colors.grey, fontSize: 20),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              width: double.infinity,
+                child: Text(
+              "${loadedProduct.description}",
+              textAlign: TextAlign.center,
+              softWrap: true,
+            ))
+          ],
+        ),
       ),
     );
   }
