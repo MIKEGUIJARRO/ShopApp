@@ -19,6 +19,7 @@ class UserProductItem extends StatelessWidget {
         backgroundImage: NetworkImage(imageUrl),
       ),
       trailing: Container(
+        
         width: 100,
         child: Row(
           children: <Widget>[
@@ -33,8 +34,7 @@ class UserProductItem extends StatelessWidget {
               icon: Icon(Icons.delete),
               color: Theme.of(context).errorColor,
               onPressed: () {
-                Provider.of<Products>(context).deleteProduct(id);
-
+                Provider.of<Products>(context, listen: false).deleteProduct(id);
               },
             ),
           ],
