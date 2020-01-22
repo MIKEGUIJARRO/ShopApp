@@ -61,19 +61,18 @@ class Products with ChangeNotifier {
     */
   }
 
-  Future<void> addProduct(Product product) {
-    const url = "https://myshop-academind.firebaseio.com/products.json";//.json
-    return http
-        .post(url,
-            body: json.encode({
-              "title": product.title,
-              "description": product.description,
-              "imageUrl": product.imageUrl,
-              "price": product.price,
-              "isFavorite": product.isFavorite,
-            }))
-        .then((response) {
-      print(json.decode(response.body));
+  Future<void> addProduct(Product product) async {
+    const url = "https://myshop-academind.firebaseio.com/products.json"; //.json
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            "title": product.title,
+            "description": product.description,
+            "imageUrl": product.imageUrl,
+            "price": product.price,
+            "isFavorite": product.isFavorite,
+          }));
+
       final newProduct = Product(
           title: product.title,
           description: product.description,
@@ -82,13 +81,10 @@ class Products with ChangeNotifier {
           id: json.decode(response.body)["name"]);
       _items.add(newProduct);
       notifyListeners();
-    }).catchError((error){
+    } catch (error) {
       print(error);
       throw error;
-      
-    });
-
-    
+    }
   }
 
   //El objetivo es hacer toda la logica dentro del provider

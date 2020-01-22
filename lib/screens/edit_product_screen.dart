@@ -79,7 +79,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
     super.didChangeDependencies();
   }
 
-  void _saveForm() {
+  Future<void> _saveForm() async {
     setState(() {
       _isLoading = true; //true
     });
@@ -102,28 +102,32 @@ class _EditProductScreenState extends State<EditProductScreen> {
       });
       Navigator.of(context).pop();
     } else {
-      //Context esta disponible en cualquier parte en mi state object
-      Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((error) {
-        return showDialog(
+      try {
+        //Se agrego el producto
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (error) {
+        await showDialog(
             context: context,
             builder: (ctx) => AlertDialog(
                   title: Text("An error ocurred!"),
                   content: Text("Something went grong."),
                   actions: <Widget>[
-                    FlatButton(child: Text("Okay"), onPressed: (){
-                      Navigator.of(context).pop();
-                    },)
+                    FlatButton(
+                      child: Text("Okay"),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    )
                   ],
                 ));
-      }).then((_) {
-        //Se agrego el producto
+      } finally {
         setState(() {
           _isLoading = false;
         });
+        //Context esta disponible en cualquier parte en mi state object
         Navigator.of(context).pop();
-      });
+      }
     }
   }
 
