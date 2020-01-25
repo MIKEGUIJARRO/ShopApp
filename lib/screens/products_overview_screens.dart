@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/products_grid.dart';
-import '../providers/products.dart';
 import '../widgets/badge.dart';
 import '../providers/cart.dart';
 import '../screens/cart_screen.dart';
 import '../widgets/app_drawer.dart';
+import '../providers/products.dart';
 
 
 enum FilterOptions {
@@ -21,6 +21,38 @@ class ProductOverviewScreen extends StatefulWidget {
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   var _showOnlyFavorites = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    // Provider.of<Products>(context).fetchAndSetProducts(); Won't work
+    //Lo de abajo es un hack que nos permite correr el metodo fetch,
+    //sin embargo no lo usamos por que es impractico, 
+    //mejor usamos el metodo didChangeDependencies()
+    /* Future.delayed(Duration.zero).then((_){ 
+      Provider.of<Products>(context).fetchAndSetProducts();
+    }); */
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      //Corre cuando la pagina se abre
+      Provider.of<Products>(context).fetchAndSetProducts().then((_){
+        setState(() {
+          _isLoading = false;
+        });
+        
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,7 +101,7 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductGrid(_showOnlyFavorites),
+      body: _isLoading ? Center(child: CircularProgressIndicator(),) : ProductGrid(_showOnlyFavorites),
     );
   }
 }
