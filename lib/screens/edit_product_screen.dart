@@ -95,12 +95,9 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
     if (_editedProduct.id != null) {
       //I am editing
-      Provider.of<Products>(context, listen: false)
+      await Provider.of<Products>(context, listen: false)
           .updateProduct(_editedProduct.id, _editedProduct);
-      setState(() {
-        _isLoading = false;
-      });
-      Navigator.of(context).pop();
+      
     } else {
       try {
         //Se agrego el producto
@@ -121,14 +118,18 @@ class _EditProductScreenState extends State<EditProductScreen> {
                     )
                   ],
                 ));
-      } finally {
+      } /* finally {
         setState(() {
           _isLoading = false;
         });
         //Context esta disponible en cualquier parte en mi state object
         Navigator.of(context).pop();
-      }
+      } */
     }
+     setState(() {
+        _isLoading = false;
+      });
+      Navigator.of(context).pop();
   }
 
   @override
@@ -154,6 +155,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                 child: ListView(
                   children: <Widget>[
                     TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
                       initialValue: _initValues["title"],
                       decoration: InputDecoration(labelText: "Title"),
                       textInputAction: TextInputAction.next,
@@ -178,6 +180,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                     ),
                     TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
                       initialValue: _initValues["price"],
                       decoration: InputDecoration(labelText: "Price"),
                       textInputAction: TextInputAction.next,
@@ -209,6 +212,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       },
                     ),
                     TextFormField(
+                      textCapitalization: TextCapitalization.sentences,
                       initialValue: _initValues["description"],
                       decoration: InputDecoration(labelText: "Description"),
                       maxLines: 3,

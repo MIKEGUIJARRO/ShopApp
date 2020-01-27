@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import '../models/http_exception.dart';
 
 import './product.dart';
 
@@ -64,13 +65,13 @@ se que estan escuchando a esta clase seran
 
   Future<void> fetchAndSetProducts() async {
     const url = "https://myshop-academind.firebaseio.com/products.json";
-    
-    try{
+
+    try {
       final response = await http.get(url);
-      
+
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
-      extractedData.forEach((prodId, prodData){
+      extractedData.forEach((prodId, prodData) {
         loadedProducts.add(Product(
           id: prodId,
           title: prodData["title"],
@@ -82,7 +83,7 @@ se que estan escuchando a esta clase seran
       });
       _items = loadedProducts;
       notifyListeners();
-    } catch(error) {
+    } catch (error) {
       throw error;
     }
   }
@@ -132,10 +133,24 @@ se que estan escuchando a esta clase seran
     notifyListeners();
   } */
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
 /*     print(prodIndex); */
     if (prodIndex >= 0) {
+      final url = "https://myshop-academind.firebaseio.com/products/$id.json";
+      try {
+        await http.patch(url,
+            body: json.encode({
+              "title": newProduct.title,
+              "description": newProduct.description,
+              "imageUrl": newProduct.imageUrl,
+              "price": newProduct.price
+            }));
+      } catch (error) {
+        print(error);
+        throw error;
+      }
+
       _items[prodIndex] = newProduct;
       notifyListeners();
     } else {
@@ -143,8 +158,21 @@ se que estan escuchando a esta clase seran
     }
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProduct(String id) async {
+    //This is called optimistic delete pattern
+    final url = "https://myshop-academind.firebaseio.com/products/$id.json";
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    var existingProduct = _items[existingProductIndex];
+
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    final response = await http.delete(url);
+
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw HttpException("Could not delete product.");
+    }
+    existingProduct = null;
   }
 }
