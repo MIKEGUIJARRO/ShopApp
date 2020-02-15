@@ -46,6 +46,10 @@ class Products with ChangeNotifier {
     ), */
   ];
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   List<Product> get items {
     /* if (_showFavoritesOnly) {
       return _items.where((prodItem) => prodItem.isFavorite).toList();
@@ -64,7 +68,7 @@ se que estan escuchando a esta clase seran
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = "https://myshop-academind.firebaseio.com/products.json";
+    final url = "https://myshop-academind.firebaseio.com/products.json?auth=$authToken";
 
     try {
       final response = await http.get(url);

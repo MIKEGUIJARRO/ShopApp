@@ -198,18 +198,21 @@ class _AuthCardState extends State<AuthCard> {
             child: Column(
               children: <Widget>[
                 TextFormField(
+                  autofocus: false,
                   decoration: InputDecoration(labelText: 'E-Mail'),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value.isEmpty || !value.contains('@')) {
                       return 'Invalid email!';
-                    }
+                    } 
+                    return "";
                   },
                   onSaved: (value) {
                     _authData['email'] = value;
                   },
                 ),
                 TextFormField(
+                  autofocus: false,
                   decoration: InputDecoration(labelText: 'Password'),
                   obscureText: true,
                   controller: _passwordController,
@@ -217,6 +220,7 @@ class _AuthCardState extends State<AuthCard> {
                     if (value.isEmpty || value.length < 5) {
                       return 'Password is too short!';
                     }
+                    return "";
                   },
                   onSaved: (value) {
                     _authData['password'] = value;
