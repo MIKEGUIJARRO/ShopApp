@@ -41,9 +41,9 @@ class MyApp extends StatelessWidget {
           cuando un provider depende de 
           otro provider definido anteriormente, cuando el provider dependiente 
           llame changeNotifier() se llamara a ChangeNotifierProxy consecuentemente*/
-          create: (_) => Products(null, []),
+          create: (_) => Products(null, [], ""),
           update: (_, auth, previousProducts) => Products(auth.token,
-              previousProducts == null ? [] : previousProducts.items),
+              previousProducts == null ? [] : previousProducts.items, auth.userId),
         ),
         ChangeNotifierProvider.value(
           value: Cart(),
