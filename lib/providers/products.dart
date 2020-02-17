@@ -96,7 +96,7 @@ se que estan escuchando a esta clase seran
   }
 
   Future<void> addProduct(Product product) async {
-    const url = "https://myshop-academind.firebaseio.com/products.json"; //.json
+    final url = "https://myshop-academind.firebaseio.com/products.json?auth=$authToken"; //.json
     try {
       final response = await http.post(url,
           body: json.encode({
@@ -144,7 +144,7 @@ se que estan escuchando a esta clase seran
     final prodIndex = _items.indexWhere((prod) => prod.id == id);
 /*     print(prodIndex); */
     if (prodIndex >= 0) {
-      final url = "https://myshop-academind.firebaseio.com/products/$id.json";
+      final url = "https://myshop-academind.firebaseio.com/products/$id.json?auth=$authToken";
       try {
         await http.patch(url,
             body: json.encode({
@@ -167,7 +167,7 @@ se que estan escuchando a esta clase seran
 
   Future<void> deleteProduct(String id) async {
     //This is called optimistic delete pattern
-    final url = "https://myshop-academind.firebaseio.com/products/$id.json";
+    final url = "https://myshop-academind.firebaseio.com/products/$id.json?auth=$authToken";
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     var existingProduct = _items[existingProductIndex];
 

@@ -37,7 +37,8 @@ class MyApp extends StatelessWidget {
         ),
 
         ChangeNotifierProxyProvider<Auth, Products>(
-          /* Usamos ChangeNotifierProxyProvide cuando un provider depende de 
+          /* Usamos ChangeNotifierProxyProvide<Dependency, newValueToProvide> 
+          cuando un provider depende de 
           otro provider definido anteriormente, cuando el provider dependiente 
           llame changeNotifier() se llamara a ChangeNotifierProxy consecuentemente*/
           create: (_) => Products(null, []),
@@ -47,8 +48,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Cart(),
         ),
-        ChangeNotifierProvider.value(
-          value: Orders(),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (_) => Orders(null, []),
+          update: (_, auth, previusOrders) => Orders(
+              auth.token, previusOrders == null ? [] : previusOrders.orders),
+          //value: Orders(),
         ),
       ],
       child: Consumer<Auth>(

@@ -5,6 +5,7 @@ import '../screens/product_detail_screen.dart';
 import '../providers/product.dart';
 
 import '../providers/cart.dart';
+import '../providers/auth.dart';
 
 class ProductItem extends StatelessWidget {
   /* final String id;
@@ -26,6 +27,7 @@ class ProductItem extends StatelessWidget {
     1. Con Provider.of escuchamos al momento de inicializar el producto y cerramos canal
     2. Con el widget Consumer wrapeamos el boton para escuchar cambios de manera permanente*/
 
+    final authData = Provider.of<Auth>(context, listen: false);
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
@@ -52,7 +54,7 @@ class ProductItem extends StatelessWidget {
                   product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () {
                 try{
-                  product.toggleFavoriteStatus();
+                  product.toggleFavoriteStatus(authData.token);
                 } catch (error){
                   print(error);
                 }
