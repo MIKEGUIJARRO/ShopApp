@@ -42,10 +42,14 @@ class ProductItem extends StatelessWidget {
                         price: 0,
                       ))); */
             },
-            child: FadeInImage(
-              placeholder: AssetImage('assets/images/product-placeholder.png'),
-              image: NetworkImage(product.imageUrl),
-              fit: BoxFit.cover,
+            child: Hero(
+              tag: product.id,
+              child: FadeInImage(
+                placeholder:
+                    AssetImage('assets/images/product-placeholder.png'),
+                image: NetworkImage(product.imageUrl),
+                fit: BoxFit.cover,
+              ),
             )),
         footer: GridTileBar(
           leading: Consumer<Product>(

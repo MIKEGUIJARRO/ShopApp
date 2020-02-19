@@ -22,20 +22,29 @@ class ProductDetailScreen extends StatelessWidget {
         Provider.of<Products>(context, listen: false).findById(productId);
 
     return Scaffold(
-      appBar: AppBar(
+      /* appBar: AppBar(
         title: Text(loadedProduct.title),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              height: 300,
-              child: Image.network(
-                loadedProduct.imageUrl,
-                fit: BoxFit.cover,
-                width: double.infinity,
+      ), */
+      body: CustomScrollView(
+        slivers: <Widget>[
+          //Scrollable areas on the screens
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(loadedProduct.title),
+              background: Hero(
+                tag: loadedProduct.id,
+                child: Image.network(
+                  loadedProduct.imageUrl,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
               ),
             ),
+          ),
+          SliverList(
+              delegate: SliverChildListDelegate([
             SizedBox(
               height: 10,
             ),
@@ -47,15 +56,18 @@ class ProductDetailScreen extends StatelessWidget {
               height: 10,
             ),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 20),
-              width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
                 child: Text(
-              "${loadedProduct.description}",
-              textAlign: TextAlign.center,
-              softWrap: true,
-            ))
-          ],
-        ),
+                  "${loadedProduct.description}",
+                  textAlign: TextAlign.center,
+                  softWrap: true,
+                )),
+            SizedBox(
+              height: 500,
+            )
+          ]))
+        ],
       ),
     );
   }
