@@ -32,30 +32,30 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: GridTile(
         child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
-                arguments: product.id);
-            //Con arguments enviamos informacion al momento del push screen
-            /* Navigator.of(context).push(MaterialPageRoute(
+            onTap: () {
+              Navigator.of(context).pushNamed(ProductDetailScreen.routeName,
+                  arguments: product.id);
+              //Con arguments enviamos informacion al momento del push screen
+              /* Navigator.of(context).push(MaterialPageRoute(
                   builder: (ctx) => ProductDetailScreen(
                         title: title,
                         price: 0,
                       ))); */
-          },
-          child: Image.network(
-            product.imageUrl,
-            fit: BoxFit.cover,
-          ),
-        ),
+            },
+            child: FadeInImage(
+              placeholder: AssetImage('assets/images/product-placeholder.png'),
+              image: NetworkImage(product.imageUrl),
+              fit: BoxFit.cover,
+            )),
         footer: GridTileBar(
           leading: Consumer<Product>(
             builder: (ctx, product, _) => IconButton(
               icon: Icon(
                   product.isFavorite ? Icons.favorite : Icons.favorite_border),
               onPressed: () {
-                try{
+                try {
                   product.toggleFavoriteStatus(authData.token, authData.userId);
-                } catch (error){
+                } catch (error) {
                   print(error);
                 }
               },
@@ -65,7 +65,7 @@ class ProductItem extends StatelessWidget {
           backgroundColor: Colors.black87,
           title: Text(product.title, textAlign: TextAlign.center),
           trailing: IconButton(
-            icon: Icon(Icons.shopping_cart),      
+            icon: Icon(Icons.shopping_cart),
             onPressed: () {
               cart.addItem(product.id, product.price, product.title);
               Scaffold.of(context).removeCurrentSnackBar();
@@ -79,7 +79,6 @@ class ProductItem extends StatelessWidget {
                   },
                 ),
               ));
-              
             },
             color: Theme.of(context).accentColor,
           ),
