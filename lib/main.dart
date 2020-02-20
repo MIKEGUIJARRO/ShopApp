@@ -14,6 +14,7 @@ import './screens/user_products_screen.dart';
 import './screens/edit_product_screen.dart';
 import './screens/auth-screen.dart';
 import './screens/splash-screen.dart';
+import './helpers/custom_route.dart';
 
 void main() => runApp(MyApp());
 
@@ -62,6 +63,12 @@ class MyApp extends StatelessWidget {
         //MaterialApp rebuilds whenever Auth changes (Calling notifyListeners())
         builder: (ctx, auth, _) => MaterialApp(
           theme: ThemeData(
+              pageTransitionsTheme: PageTransitionsTheme(
+                builders: {
+                  TargetPlatform.android: CustomPageTransitionBuilder(),
+                  TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                }
+              ),
               primarySwatch: Colors.amber,
               accentColor: Colors.deepOrange,
               fontFamily: "Lato"),
