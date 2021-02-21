@@ -1,7 +1,7 @@
 # Shop App 🛒
 
 <h2 align="center">
-    <img src="profileScreen.png" alt="Look up!" width="100%" />
+    <img src="profileScreen.png" alt="Look up!" width="50%" />
   <br>
 </h2>
 
