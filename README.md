@@ -6,8 +6,8 @@
 </h2>
 
 ## Features 💡
-⚡️ OAuth
-⚡️ Firebase database
+⚡️ OAuth\
+⚡️ Firebase database\
 ⚡️ State management
 
 ## Technologies used 🛠️
