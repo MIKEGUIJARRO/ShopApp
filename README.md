@@ -1,5 +1,5 @@
 # Shop App 🛒
-
+MVP flutter app that allows its user to sell products in the app and see all the products on sale in the main page.
 <h2 align="center">
     <img src="profileScreen.png" alt="Look up!" width="50%" />
   <br>
